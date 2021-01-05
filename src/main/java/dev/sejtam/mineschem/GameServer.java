@@ -3,6 +3,7 @@ package dev.sejtam.mineschem;
 import dev.sejtam.mineschem.commands.SchematicCommand;
 import dev.sejtam.mineschem.world.AnvilChunkLoader;
 import dev.sejtam.mineschem.world.VoidChunkLoader;
+
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.command.CommandManager;
 import net.minestom.server.extras.MojangAuth;
