@@ -1,6 +1,6 @@
 ### Server ###
-.server/
 !.server/schematics/
+.server/
 
 ### Intellij ###
 .idea/**/workspace.xml
