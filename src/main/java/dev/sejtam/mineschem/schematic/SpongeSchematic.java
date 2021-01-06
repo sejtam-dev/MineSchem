@@ -5,6 +5,7 @@ import kotlin.Pair;
 import dev.sejtam.mineschem.utils.Region;
 
 import net.minestom.server.instance.Instance;
+import net.minestom.server.instance.batch.BlockBatch;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.utils.BlockPosition;
 import net.minestom.server.utils.Position;
@@ -22,6 +23,7 @@ public class SpongeSchematic implements ISchematic {
 
     private File schematicFile;
     private Instance instance;
+    private BlockBatch blockBatch;
 
     private Integer version = 2;
 
@@ -45,6 +47,7 @@ public class SpongeSchematic implements ISchematic {
     public SpongeSchematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;
         this.instance = instance;
+        this.blockBatch = this.instance.createBlockBatch();
     }
 
     public ErrorMessage read() {
@@ -277,7 +280,6 @@ public class SpongeSchematic implements ISchematic {
         Iterator<Region.RegionBlock> regionIterator = region.iterator();
         while(regionIterator.hasNext()) {
             Region.RegionBlock regionBlock = regionIterator.next();
-
             short stateId = this.instance.getBlockStateId(regionBlock.getPosition());
             Block block = Block.fromStateId(stateId);
             String name = block.getName();
@@ -322,6 +324,9 @@ public class SpongeSchematic implements ISchematic {
         if(this.instance == null)
             return ErrorMessage.Instance;
 
+        if(this.blockBatch == null)
+            return ErrorMessage.BlockBatch;
+
         if(this.regionBlocks == null || this.regionBlocks.size() == 0)
             return ErrorMessage.NoBlocks;
 
@@ -329,7 +334,7 @@ public class SpongeSchematic implements ISchematic {
             BlockPosition blockPosition = regionBlock.getPosition();
             short stateId = regionBlock.getStateId();
 
-            this.instance.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
+            this.blockBatch.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
         }
 
         return ErrorMessage.None;

@@ -30,6 +30,7 @@ public interface ISchematic {
         NoBlocks,
         BadMaterials,
         Instance,
+        BlockBatch,
         None
     }
 
