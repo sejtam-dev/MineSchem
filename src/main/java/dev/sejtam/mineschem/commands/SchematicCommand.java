@@ -1,6 +1,7 @@
 package dev.sejtam.mineschem.commands;
 
-import dev.sejtam.mineschem.schematic.Schematic;
+import dev.sejtam.mineschem.schematic.ISchematc;
+import dev.sejtam.mineschem.schematic.SpongeSchematic;
 
 import net.minestom.server.chat.ChatColor;
 import net.minestom.server.command.CommandSender;
@@ -26,11 +27,14 @@ public class SchematicCommand extends Command {
         addSyntax((sender, arguments) -> {
             Player player = (Player) sender;
 
-            sender.sendMessage(ChatColor.RED + "Schematic building...");
-            Schematic schematic = new Schematic(arguments.getWord("fileName"), player.getInstance());
+            sender.sendMessage(ChatColor.RED + "SpongeSchematic building...");
+            SpongeSchematic spongeSchematic = new SpongeSchematic(arguments.getWord("fileName"), player.getInstance());
 
-            if(schematic.build(player.getPosition()) == Schematic.ErrorMessages.None)
-                sender.sendMessage(ChatColor.CYAN + "Schematic build!");
+            ISchematc.ErrorMessages error = spongeSchematic.build(player.getPosition());
+            if(error == SpongeSchematic.ErrorMessages.None)
+                sender.sendMessage(ChatColor.CYAN + "SpongeSchematic build!");
+            else
+                sender.sendMessage(ChatColor.RED + error.toString() + " Error!");
 
 
         }, type, fileName);
