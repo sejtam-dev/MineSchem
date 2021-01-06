@@ -178,9 +178,6 @@ public class MCEditSchematic implements ISchematic {
         if(this.instance == null)
             return ErrorMessage.Instance;
 
-        if(this.blockBatch == null)
-            return ErrorMessage.BlockBatch;
-
         if(this.regionBlocks == null || this.regionBlocks.size() == 0)
             return ErrorMessage.NoBlocks;
 
