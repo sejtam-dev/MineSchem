@@ -227,7 +227,7 @@ public class SpongeSchematic implements ISchematc {
             BlockPosition blockPosition = regionBlock.getPosition();
             short stateId = regionBlock.getStateId();
 
-            this.instance.setBlockStateId(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(), stateId);
+            this.instance.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
         }
 
         return ErrorMessages.None;

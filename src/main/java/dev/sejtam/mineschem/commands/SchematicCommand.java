@@ -30,6 +30,7 @@ public class SchematicCommand extends Command {
             sender.sendMessage(ChatColor.RED + "SpongeSchematic building...");
             SpongeSchematic spongeSchematic = new SpongeSchematic(arguments.getWord("fileName"), player.getInstance());
 
+            spongeSchematic.read();
             ISchematc.ErrorMessages error = spongeSchematic.build(player.getPosition());
             if(error == SpongeSchematic.ErrorMessages.None)
                 sender.sendMessage(ChatColor.CYAN + "SpongeSchematic build!");
