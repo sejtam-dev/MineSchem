@@ -45,7 +45,6 @@ public class MCEditSchematic implements ISchematic {
     public MCEditSchematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;
         this.instance = instance;
-        this.blockBatch = this.instance.createBlockBatch();
     }
 
     // https://github.com/EngineHub/WorldEdit/blob/version/5.x/src/main/java/com/sk89q/worldedit/schematic/MCEditSchematicFormat.java
@@ -185,12 +184,16 @@ public class MCEditSchematic implements ISchematic {
         if(this.regionBlocks == null || this.regionBlocks.size() == 0)
             return ErrorMessage.NoBlocks;
 
+        this.blockBatch = this.instance.createBlockBatch();
+
         for (Region.RegionBlock regionBlock : this.regionBlocks) {
             BlockPosition blockPosition = regionBlock.getPosition();
             short stateId = regionBlock.getStateId();
 
             this.blockBatch.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
         }
+
+        this.blockBatch.flush(() -> {});
 
         return ErrorMessage.None;
     }

@@ -47,7 +47,6 @@ public class SpongeSchematic implements ISchematic {
     public SpongeSchematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;
         this.instance = instance;
-        this.blockBatch = this.instance.createBlockBatch();
     }
 
     public ErrorMessage read() {
@@ -330,12 +329,16 @@ public class SpongeSchematic implements ISchematic {
         if(this.regionBlocks == null || this.regionBlocks.size() == 0)
             return ErrorMessage.NoBlocks;
 
+        this.blockBatch = this.instance.createBlockBatch();
+
         for (Region.RegionBlock regionBlock : this.regionBlocks) {
             BlockPosition blockPosition = regionBlock.getPosition();
             short stateId = regionBlock.getStateId();
 
             this.blockBatch.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
         }
+
+        this.blockBatch.flush(() -> {});
 
         return ErrorMessage.None;
     }
