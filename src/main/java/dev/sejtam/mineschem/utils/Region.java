@@ -142,15 +142,19 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
         }
 
         public RegionBlock next() {
-            short state = instance.getBlockStateId(this.baseX + this.x, this.baseY + this.y, this.baseZ + this.z);
+            BlockPosition blockPosition = new BlockPosition(this.baseX + this.x, this.baseY + this.y, this.baseZ + this.z);
+            short state = this.instance.getBlockStateId(blockPosition);
+            RegionBlock regionBlock = new RegionBlock(blockPosition, state);
+
             if (++x >= this.sizeX) {
                 this.x = 0;
-                if (++this.y >= this.sizeY) {
-                    this.y = 0;
-                    ++this.z;
+                if (++this.z >= this.sizeZ) {
+                    this.z = 0;
+                    ++this.y;
                 }
             }
-            return new RegionBlock(new BlockPosition(this.x, this.y, this.z), state);
+
+            return regionBlock;
         }
 
         public void remove() {}

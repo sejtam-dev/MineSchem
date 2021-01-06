@@ -1,15 +1,16 @@
 package dev.sejtam.mineschem.schematic;
 
+import dev.sejtam.mineschem.utils.Region;
 import net.minestom.server.utils.Position;
 import org.jetbrains.annotations.NotNull;
 
 public interface ISchematc {
 
-    ErrorMessages read();
-    ErrorMessages write();
-    ErrorMessages build(@NotNull Position position);
+    ErrorMessage read();
+    ErrorMessage write(@NotNull Region region);
+    ErrorMessage build(@NotNull Position position);
 
-    enum ErrorMessages {
+    enum ErrorMessage {
         NoSuchFile,
         NotLoaded,
         NBTName,
@@ -22,6 +23,7 @@ public interface ISchematc {
         PaletteGetInt,
         NBTBlockData,
         BadRead,
+        BadWrite,
         VarIntSize,
         NoBlocks,
         Instance,
