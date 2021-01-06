@@ -150,7 +150,7 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
                     ++this.z;
                 }
             }
-            return new RegionBlock(new BlockPosition(x, y, z), state);
+            return new RegionBlock(new BlockPosition(this.x, this.y, this.z), state);
         }
 
         public void remove() {}

@@ -45,18 +45,18 @@ public class SpongeSchematic implements ISchematc {
     }
 
     public ErrorMessages read() {
-        if(isLoaded)
+        if(this.isLoaded)
             return ErrorMessages.None;
 
         // Check is file exists
-        if(!schematicFile.exists())
+        if(!this.schematicFile.exists())
             return ErrorMessages.NoSuchFile;
 
         // Check is file
-        if(!schematicFile.isFile())
+        if(!this.schematicFile.isFile())
             return ErrorMessages.NoSuchFile;
 
-        try (NBTReader reader = new NBTReader(schematicFile, true)) {
+        try (NBTReader reader = new NBTReader(this.schematicFile, true)) {
             // Get Main NBT Name
             Pair<String, NBT> pair = reader.readNamed();
             // Get Main NBT
@@ -93,38 +93,38 @@ public class SpongeSchematic implements ISchematc {
             return ErrorMessages.BadRead;
         }
 
-        isLoaded = true;
+        this.isLoaded = true;
         return ErrorMessages.None;
     }
 
     private ErrorMessages readSizes(NBTCompound nbtTag) {
         // Get Width
-        width = nbtTag.getShort("Width");
-        if(width == null)
+        this.width = nbtTag.getShort("Width");
+        if(this.width == null)
             return ErrorMessages.NBTWidth;
 
         // Get Height
-        height = nbtTag.getShort("Height");
-        if(height == null)
+        this.height = nbtTag.getShort("Height");
+        if(this.height == null)
             return ErrorMessages.NBTHeight;
 
         // Get Length
-        length = nbtTag.getShort("Length");
-        if(length == null)
+        this.length = nbtTag.getShort("Length");
+        if(this.length == null)
             return ErrorMessages.NBTLength;
 
         // Get offset
-        offset = nbtTag.getIntArray("Offset");
-        if(offset == null || offset.length != 3)
-            offset = new int[] {0, 0, 0};
+        this.offset = nbtTag.getIntArray("Offset");
+        if(this.offset == null || this.offset.length != 3)
+            this.offset = new int[] {0, 0, 0};
 
         return ErrorMessages.None;
     }
 
     private ErrorMessages readBlockPalette(NBTCompound nbtTag) {
         // Get Max Palette
-        maxPalette = nbtTag.getInt("PaletteMax");
-        if(maxPalette == null)
+        this.maxPalette = nbtTag.getInt("PaletteMax");
+        if(this.maxPalette == null)
             return ErrorMessages.NBTMaxPalette;
 
         // Get Palette
@@ -143,17 +143,17 @@ public class SpongeSchematic implements ISchematc {
             if(value == null)
                 return ErrorMessages.PaletteGetInt;
 
-            palette.put(key, value);
+            this.palette.put(key, value);
         }
 
         // Sort Palette map by values
-        palette = palette.entrySet().stream()
+        this.palette = this.palette.entrySet().stream()
                 .sorted(Comparator.comparing(Map.Entry::getValue))
                 .collect(LinkedHashMap::new,(map, entry) -> map.put(entry.getKey(), entry.getValue()), LinkedHashMap::putAll);
 
         // Get block data
-        blocksData = nbtTag.getByteArray("BlockData");
-        if(blocksData == null || blocksData.length == 0)
+        this.blocksData = nbtTag.getByteArray("BlockData");
+        if(this.blocksData == null || this.blocksData.length == 0)
             return ErrorMessages.NBTBlockData;
 
         return ErrorMessages.None;
@@ -167,16 +167,16 @@ public class SpongeSchematic implements ISchematc {
         int varintLength;
         List<String> paletteKeys = new ArrayList<>(palette.keySet());
 
-        while (i < blocksData.length) {
+        while (i < this.blocksData.length) {
             value = 0;
             varintLength = 0;
 
             while (true) {
-                value |= (blocksData[i] & 127) << (varintLength++ * 7);
+                value |= (this.blocksData[i] & 127) << (varintLength++ * 7);
                 if (varintLength > 5) {
                     return ErrorMessages.VarIntSize;
                 }
-                if ((blocksData[i] & 128) != 128) {
+                if ((this.blocksData[i] & 128) != 128) {
                     i++;
                     break;
                 }
@@ -197,7 +197,7 @@ public class SpongeSchematic implements ISchematc {
             String block = paletteKeys.get(value);
             short stateId = getStateId(block);
 
-            blocks.add(new Region.RegionBlock(
+            this.blocks.add(new Region.RegionBlock(
                     new BlockPosition(x, y, z),
                     stateId
             ));
@@ -214,20 +214,20 @@ public class SpongeSchematic implements ISchematc {
 
 
     public ErrorMessages build(@NotNull Position position) {
-        if(!isLoaded)
+        if(!this.isLoaded)
             return ErrorMessages.NotLoaded;
 
-        if(instance == null)
+        if(this.instance == null)
             return ErrorMessages.Instance;
 
-        if(blocks == null || blocks.size() == 0)
+        if(this.blocks == null || this.blocks.size() == 0)
             return ErrorMessages.NoBlocks;
 
-        for (Region.RegionBlock regionBlock : blocks) {
+        for (Region.RegionBlock regionBlock : this.blocks) {
             BlockPosition blockPosition = regionBlock.getPosition();
             short stateId = regionBlock.getStateId();
 
-            instance.setBlockStateId(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(), stateId);
+            this.instance.setBlockStateId(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(), stateId);
         }
 
         return ErrorMessages.None;
