@@ -5,6 +5,7 @@ import kotlin.Pair;
 import dev.sejtam.mineschem.utils.Region;
 
 import net.minestom.server.instance.Instance;
+import net.minestom.server.instance.batch.BlockBatch;
 import net.minestom.server.utils.BlockPosition;
 import net.minestom.server.utils.Position;
 
@@ -19,6 +20,7 @@ public class MCEditSchematic implements ISchematic {
 
     private File schematicFile;
     private Instance instance;
+    private BlockBatch blockBatch;
 
     private Integer version = 2;
 
@@ -43,6 +45,7 @@ public class MCEditSchematic implements ISchematic {
     public MCEditSchematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;
         this.instance = instance;
+        this.blockBatch = this.instance.createBlockBatch();
     }
 
     // https://github.com/EngineHub/WorldEdit/blob/version/5.x/src/main/java/com/sk89q/worldedit/schematic/MCEditSchematicFormat.java
@@ -169,23 +172,26 @@ public class MCEditSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
-    public ISchematic.ErrorMessage build(@NotNull Position position) {
+    public ErrorMessage build(@NotNull Position position) {
         if(!this.isLoaded)
-            return ISchematic.ErrorMessage.NotLoaded;
+            return ErrorMessage.NotLoaded;
 
         if(this.instance == null)
-            return ISchematic.ErrorMessage.Instance;
+            return ErrorMessage.Instance;
+
+        if(this.blockBatch == null)
+            return ErrorMessage.BlockBatch;
 
         if(this.regionBlocks == null || this.regionBlocks.size() == 0)
-            return ISchematic.ErrorMessage.NoBlocks;
+            return ErrorMessage.NoBlocks;
 
         for (Region.RegionBlock regionBlock : this.regionBlocks) {
             BlockPosition blockPosition = regionBlock.getPosition();
             short stateId = regionBlock.getStateId();
 
-            this.instance.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
+            this.blockBatch.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
         }
 
-        return ISchematic.ErrorMessage.None;
+        return ErrorMessage.None;
     }
 }
