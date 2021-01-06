@@ -9,6 +9,6 @@ Support
     - Build ✅
     
  - MCEdit Schematic (x.x - 1.12.2) ❌
-    - Read ❌ - [WorldEdit](https://github.com/EngineHub/WorldEdit/blob/master/worldedit-core/src/main/java/com/sk89q/worldedit/extent/clipboard/io/MCEditSchematicReader.java)
+    - Read ✅ - [WorldEdit](https://github.com/EngineHub/WorldEdit/blob/master/worldedit-core/src/main/java/com/sk89q/worldedit/extent/clipboard/io/MCEditSchematicReader.java)
     - Write ❌
-    - Build ❌
+    - Build ✅

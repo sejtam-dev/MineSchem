@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class SpongeSchematic implements ISchematc {
+public class SpongeSchematic implements ISchematic {
 
     private File schematicFile;
     private Instance instance;
@@ -35,7 +35,7 @@ public class SpongeSchematic implements ISchematc {
     private Integer maxPalette;
     private Map<String, Integer> palette = new HashMap<>();
     private byte[] blocksData;
-    private List<Region.RegionBlock> blocks = new ArrayList<>();
+    private List<Region.RegionBlock> regionBlocks = new ArrayList<>();
 
     private boolean isLoaded = false;
 
@@ -72,7 +72,7 @@ public class SpongeSchematic implements ISchematc {
             if(this.version == null)
                 this.version = 2;
 
-            // TODO: Check Data Version
+            // TODO: Read and Check Data Version
 
             ErrorMessage errorMessage = readSizes(nbtTag);
             if(errorMessage != ErrorMessage.None)
@@ -86,7 +86,7 @@ public class SpongeSchematic implements ISchematc {
             if(errorMessage != ErrorMessage.None)
                 return errorMessage;
 
-            // TODO: Block entities
+            // TODO: Read Block entities
 
             // TODO: Read entities
 
@@ -202,7 +202,7 @@ public class SpongeSchematic implements ISchematc {
             String block = paletteKeys.get(value);
             short stateId = getStateId(block);
 
-            this.blocks.add(new Region.RegionBlock(
+            this.regionBlocks.add(new Region.RegionBlock(
                     new BlockPosition(x, y, z),
                     stateId
             ));
@@ -213,12 +213,13 @@ public class SpongeSchematic implements ISchematc {
         return ErrorMessage.None;
     }
 
-    // TODO: Write
     public ErrorMessage write(@NotNull Region region) {
         NBTCompound nbtTag = new NBTCompound();
 
         // Set Version
         nbtTag.setInt("Version", this.version);
+
+        // TODO: Write Data entities
 
         ErrorMessage errorMessage = writeSizes(nbtTag, region);
         if(errorMessage != ErrorMessage.None)
@@ -227,6 +228,14 @@ public class SpongeSchematic implements ISchematc {
         errorMessage = writeBlockPalette(nbtTag, region);
         if(errorMessage != ErrorMessage.None)
             return errorMessage;
+
+        // TODO: Write Block entities
+
+        // TODO: Write entities
+
+        // TODO: Write Biome Palette
+
+        // TODO: Write BiomeData
 
         try(NBTWriter writer = new NBTWriter(this.schematicFile, true)) {
             writer.writeNamed("Schematic", nbtTag);
@@ -313,10 +322,10 @@ public class SpongeSchematic implements ISchematc {
         if(this.instance == null)
             return ErrorMessage.Instance;
 
-        if(this.blocks == null || this.blocks.size() == 0)
+        if(this.regionBlocks == null || this.regionBlocks.size() == 0)
             return ErrorMessage.NoBlocks;
 
-        for (Region.RegionBlock regionBlock : this.blocks) {
+        for (Region.RegionBlock regionBlock : this.regionBlocks) {
             BlockPosition blockPosition = regionBlock.getPosition();
             short stateId = regionBlock.getStateId();
 

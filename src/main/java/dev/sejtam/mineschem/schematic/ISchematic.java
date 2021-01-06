@@ -1,10 +1,12 @@
 package dev.sejtam.mineschem.schematic;
 
 import dev.sejtam.mineschem.utils.Region;
+
 import net.minestom.server.utils.Position;
+
 import org.jetbrains.annotations.NotNull;
 
-public interface ISchematc {
+public interface ISchematic {
 
     ErrorMessage read();
     ErrorMessage write(@NotNull Region region);
@@ -26,6 +28,7 @@ public interface ISchematc {
         BadWrite,
         VarIntSize,
         NoBlocks,
+        BadMaterials,
         Instance,
         None
     }

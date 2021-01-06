@@ -1,9 +1,9 @@
 package dev.sejtam.mineschem.commands;
 
-import dev.sejtam.mineschem.schematic.ISchematc;
-import dev.sejtam.mineschem.schematic.SpongeSchematic;
-
+import dev.sejtam.mineschem.schematic.ISchematic;
+import dev.sejtam.mineschem.schematic.Schematic;
 import dev.sejtam.mineschem.utils.Region;
+
 import net.minestom.server.chat.ChatColor;
 import net.minestom.server.command.CommandSender;
 import net.minestom.server.command.builder.Arguments;
@@ -41,11 +41,11 @@ public class SchematicCommand extends Command {
                 case "load":
                         sender.sendMessage(ChatColor.RED + "Schematic loading...");
 
-                        SpongeSchematic loadSchematic = new SpongeSchematic(arguments.getWord("fileName"), player.getInstance());
+                        Schematic loadSchematic = new Schematic(arguments.getWord("fileName"), player.getInstance());
                         loadSchematic.read();
 
-                        ISchematc.ErrorMessage errorMessage = loadSchematic.build(player.getPosition());
-                        if(errorMessage == ISchematc.ErrorMessage.None)
+                        ISchematic.ErrorMessage errorMessage = loadSchematic.build(player.getPosition());
+                        if(errorMessage == ISchematic.ErrorMessage.None)
                             sender.sendMessage(ChatColor.CYAN + "Schematic loaded!");
                         else
                             sender.sendMessage(ChatColor.RED + errorMessage.toString() + " - Error!");
@@ -65,11 +65,11 @@ public class SchematicCommand extends Command {
                             break;
                         }
 
-                        SpongeSchematic writeSchematic = new SpongeSchematic(arguments.getWord("fileName"), player.getInstance());
-                        Region region = new Region(pos1.get(uuid), pos2.get(uuid));
+                        Schematic writeSchematic = new Schematic(arguments.getWord("fileName"), player.getInstance());
+                        Region region = new Region(this.pos1.get(uuid), this.pos2.get(uuid));
 
-                        ISchematc.ErrorMessage errorMessage1 = writeSchematic.write(region);
-                        if(errorMessage1 == ISchematc.ErrorMessage.None)
+                        ISchematic.ErrorMessage errorMessage1 = writeSchematic.write(region);
+                        if(errorMessage1 == ISchematic.ErrorMessage.None)
                             sender.sendMessage(ChatColor.CYAN + "Schematic saved!");
                         else
                             sender.sendMessage(ChatColor.RED + errorMessage1.toString() + " - Error!");
