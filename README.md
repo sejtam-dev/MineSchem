@@ -41,9 +41,7 @@ Gradle
 Repository
 ```
 repositories {
-    ...
     maven { url 'https://repo.repsy.io/mvn/sejtam10/mineschem' }
-    ...
 }
 ```
 
