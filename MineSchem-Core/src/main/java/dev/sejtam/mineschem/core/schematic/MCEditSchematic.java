@@ -1,8 +1,8 @@
-package dev.sejtam.mineschem.schematic;
+package dev.sejtam.mineschem.core.schematic;
 
 import kotlin.Pair;
 
-import dev.sejtam.mineschem.utils.Region;
+import dev.sejtam.mineschem.core.utils.Region;
 
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.batch.BlockBatch;

@@ -1,8 +1,8 @@
-package dev.sejtam.mineschem.commands;
+package dev.sejtam.mineschem.core.commands;
 
-import dev.sejtam.mineschem.schematic.ISchematic;
-import dev.sejtam.mineschem.schematic.Schematic;
-import dev.sejtam.mineschem.utils.Region;
+import dev.sejtam.mineschem.core.schematic.ISchematic;
+import dev.sejtam.mineschem.core.schematic.Schematic;
+import dev.sejtam.mineschem.core.utils.Region;
 
 import net.minestom.server.chat.ChatColor;
 import net.minestom.server.command.CommandSender;

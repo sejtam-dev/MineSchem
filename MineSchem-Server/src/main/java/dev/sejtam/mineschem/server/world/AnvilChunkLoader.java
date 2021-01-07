@@ -1,4 +1,4 @@
-package dev.sejtam.mineschem.world;
+package dev.sejtam.mineschem.server.world;
 
 import java.io.File;
 import java.io.IOException;

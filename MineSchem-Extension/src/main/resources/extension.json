@@ -1,0 +1,5 @@
+{
+  "entrypoint": "dev.sejtam.mineschem.extension.MineSchem",
+  "name": "MineSchem",
+  "version": "1.0"
+}

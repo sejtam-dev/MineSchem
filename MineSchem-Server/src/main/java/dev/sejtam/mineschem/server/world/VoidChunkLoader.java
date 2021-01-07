@@ -1,4 +1,4 @@
-package dev.sejtam.mineschem.world;
+package dev.sejtam.mineschem.server.world;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.*;

@@ -7,10 +7,20 @@
     <groupId>dev.sejtam</groupId>
     <artifactId>MineSchem</artifactId>
     <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>MineSchem-Extension</module>
+        <module>MineSchem-Server</module>
+        <module>MineSchem-Core</module>
+    </modules>
 
     <properties>
-        <maven.compiler.target>1.11</maven.compiler.target>
-        <maven.compiler.source>1.11</maven.compiler.source>
+        <minestom-version>7c5bb71</minestom-version>
+        <java-version>11</java-version>
+
+        <maven.compiler.target>${java-version}</maven.compiler.target>
+        <maven.compiler.source>${java-version}</maven.compiler.source>
     </properties>
 
     <repositories>
@@ -23,14 +33,20 @@
             <id>Minecraft.net</id>
             <url>https://libraries.minecraft.net</url>
         </repository>
+
+        <repository>
+            <id>Sponge</id>
+            <url>https://repo.spongepowered.org/maven</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>com.github.Minestom</groupId>
             <artifactId>Minestom</artifactId>
-            <version>261d734740</version>
-            <scope>compile</scope>
+            <version>${minestom-version}</version>
+            <scope>provided</scope>
+
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.shrinkwrap.resolver</groupId>
@@ -38,15 +54,26 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- Fix org.jboss.shrinkwrap.resolver -->
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-depchain</artifactId>
+            <version>3.1.4</version>
+            <scope>provided</scope>
+            <type>pom</type>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>1.11</source>
-                    <target>1.11</target>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
                 </configuration>
             </plugin>
         </plugins>

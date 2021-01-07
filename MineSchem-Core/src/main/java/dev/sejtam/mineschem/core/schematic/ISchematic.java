@@ -1,6 +1,6 @@
-package dev.sejtam.mineschem.schematic;
+package dev.sejtam.mineschem.core.schematic;
 
-import dev.sejtam.mineschem.utils.Region;
+import dev.sejtam.mineschem.core.utils.Region;
 
 import net.minestom.server.utils.Position;
 

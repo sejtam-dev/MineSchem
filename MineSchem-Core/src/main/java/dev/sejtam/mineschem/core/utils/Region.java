@@ -1,4 +1,4 @@
-package dev.sejtam.mineschem.utils;
+package dev.sejtam.mineschem.core.utils;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;

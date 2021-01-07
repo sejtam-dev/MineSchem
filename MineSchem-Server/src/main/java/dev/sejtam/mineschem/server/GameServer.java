@@ -1,8 +1,9 @@
-package dev.sejtam.mineschem;
+package dev.sejtam.mineschem.server;
 
-import dev.sejtam.mineschem.commands.SchematicCommand;
-import dev.sejtam.mineschem.world.AnvilChunkLoader;
-import dev.sejtam.mineschem.world.VoidChunkLoader;
+import dev.sejtam.mineschem.core.commands.SchematicCommand;
+
+import dev.sejtam.mineschem.server.world.AnvilChunkLoader;
+import dev.sejtam.mineschem.server.world.VoidChunkLoader;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.command.CommandManager;

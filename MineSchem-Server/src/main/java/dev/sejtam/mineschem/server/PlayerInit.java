@@ -1,4 +1,4 @@
-package dev.sejtam.mineschem;
+package dev.sejtam.mineschem.server;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.GameMode;
