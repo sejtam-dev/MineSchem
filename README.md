@@ -12,3 +12,46 @@ Support
     - Read ✅ - [WorldEdit](https://github.com/EngineHub/WorldEdit/blob/master/worldedit-core/src/main/java/com/sk89q/worldedit/extent/clipboard/io/MCEditSchematicReader.java)
     - Write ❌
     - Build ✅
+    
+Maven
+---
+
+Repository
+```
+<repositories>
+    <repository>
+         <id>MineSchem</id>
+         <url>https://repo.repsy.io/mvn/sejtam10/mineschem</url>
+    </repository>
+</repositories>
+```
+
+Dependency
+```
+<dependency>
+    <groupId>dev.sejtam</groupId>
+    <artifactId>MineSchem-Core</artifactId>
+    version>1.0</version>
+</dependency>
+```
+
+Gradle
+---
+
+Repository
+```
+repositories {
+    ...
+    maven { url 'https://repo.repsy.io/mvn/sejtam10/mineschem' }
+    ...
+}
+```
+
+Dependency
+```
+dependencies {
+    compile 'dev.sejtam:MineSchem-Core:1.0'
+}
+```
+
+

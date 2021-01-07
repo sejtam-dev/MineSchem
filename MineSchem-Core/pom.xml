@@ -11,4 +11,12 @@
 
     <artifactId>MineSchem-Core</artifactId>
 
+    <distributionManagement>
+        <repository>
+            <id>repsy</id>
+            <name>Public Repository</name>
+            <url>https://repo.repsy.io/mvn/sejtam10/mineschem/</url>
+        </repository>
+    </distributionManagement>
+
 </project>
