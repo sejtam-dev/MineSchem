@@ -10,7 +10,7 @@ public interface ISchematic {
 
     ErrorMessage read();
     ErrorMessage write(@NotNull Region region);
-    ErrorMessage build(@NotNull Position position);
+    ErrorMessage build(@NotNull Position position, Runnable completed);
 
     enum ErrorMessage {
         NoSuchFile,

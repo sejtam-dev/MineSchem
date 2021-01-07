@@ -44,11 +44,12 @@ public class SchematicCommand extends Command {
                         Schematic loadSchematic = new Schematic(arguments.getWord("fileName"), player.getInstance());
                         loadSchematic.read();
 
-                        ISchematic.ErrorMessage errorMessage = loadSchematic.build(player.getPosition());
-                        if(errorMessage == ISchematic.ErrorMessage.None)
-                            sender.sendMessage(ChatColor.CYAN + "Schematic loaded!");
-                        else
+                        ISchematic.ErrorMessage errorMessage = loadSchematic.build(player.getPosition(), () -> {
+                            sender.sendMessage(ChatColor.CYAN + "Schematic built!");
+                        });
+                        if(errorMessage != ISchematic.ErrorMessage.None)
                             sender.sendMessage(ChatColor.RED + errorMessage.toString() + " - Error!");
+
                     break;
 
                 case "save":

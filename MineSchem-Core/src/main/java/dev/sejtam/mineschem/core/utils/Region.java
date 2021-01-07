@@ -2,6 +2,7 @@ package dev.sejtam.mineschem.core.utils;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
+import net.minestom.server.instance.block.Block;
 import net.minestom.server.utils.BlockPosition;
 import net.minestom.server.utils.Position;
 
@@ -63,7 +64,7 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
         return new BlockPosition(this.pos2.getX(), this.pos2.getY(), this.pos2.getZ());
     }
 
-    public short[] cornersStateId() {
+    public short[] cornerBlocksStateId() {
         short[] corners = new short[8];
 
         corners[0] = instance.getBlockStateId(this.pos1.getX(), this.pos1.getY(), this.pos1.getZ());
@@ -77,7 +78,7 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
 
         return corners;
     }
-    public BlockPosition[] cornersBlockPosition() {
+    public BlockPosition[] cornerBlocksPosition() {
         BlockPosition[] corners = new BlockPosition[8];
 
         corners[0] = new BlockPosition(this.pos1.getX(), this.pos1.getY(), this.pos1.getZ());
@@ -95,6 +96,7 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
     public Iterator<RegionBlock> iterator() {
         return new RegionIterator(this.pos1.getX(), this.pos1.getY(), pos1.getZ(), this.pos2.getX(), pos2.getY(), pos2.getZ(), this.instance);
     }
+
     public List<Short> getStateIds() {
         Iterator<RegionBlock> iterator = this.iterator();
         List<Short> list = new ArrayList<>();
@@ -111,6 +113,27 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
         while (iterator.hasNext()) {
             RegionBlock block = iterator.next();
             map.put(block.getPosition(), block.getStateId());
+        }
+
+        return map;
+    }
+
+    public List<Block> getBlocks() {
+        Iterator<RegionBlock> iterator = this.iterator();
+        List<Block> list = new ArrayList<>();
+
+        while (iterator.hasNext())
+            list.add(Block.fromStateId(iterator.next().getStateId()));
+
+        return list;
+    }
+    public Map<BlockPosition, Block> getBlocksMap() {
+        Iterator<RegionBlock> iterator = this.iterator();
+        Map<BlockPosition, Block> map = new HashMap<>();
+
+        while (iterator.hasNext()) {
+            RegionBlock block = iterator.next();
+            map.put(block.getPosition(), Block.fromStateId(block.getStateId()));
         }
 
         return map;

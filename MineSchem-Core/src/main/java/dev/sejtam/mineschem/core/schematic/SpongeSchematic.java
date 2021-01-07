@@ -316,7 +316,7 @@ public class SpongeSchematic implements ISchematic {
     }
 
 
-    public ErrorMessage build(@NotNull Position position) {
+    public ErrorMessage build(@NotNull Position position, Runnable completed) {
         if(!this.isLoaded)
             return ErrorMessage.NotLoaded;
 
@@ -335,8 +335,7 @@ public class SpongeSchematic implements ISchematic {
             this.blockBatch.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
         }
 
-        this.blockBatch.flush(() -> {});
-
+        this.blockBatch.flush(completed);
         return ErrorMessage.None;
     }
 
