@@ -1,15 +1,28 @@
 package dev.sejtam.mineschem.core.schematic;
 
+import dev.sejtam.mineschem.core.utils.EntityUtils;
+import dev.sejtam.mineschem.core.utils.ItemStackUtils;
 import kotlin.Pair;
 
 import dev.sejtam.mineschem.core.utils.Region;
 
+import net.minestom.server.MinecraftServer;
+import net.minestom.server.chat.ChatParser;
+import net.minestom.server.chat.JsonMessage;
+import net.minestom.server.entity.*;
+import net.minestom.server.entity.type.animal.EntityCat;
+import net.minestom.server.entity.type.decoration.EntityArmorStand;
+import net.minestom.server.entity.type.decoration.EntityItemFrame;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.batch.BlockBatch;
 import net.minestom.server.instance.block.Block;
+import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
 import net.minestom.server.utils.BlockPosition;
+import net.minestom.server.utils.NBTUtils;
 import net.minestom.server.utils.Position;
 
+import net.minestom.server.utils.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import org.jglrxavpok.hephaistos.nbt.*;
@@ -38,6 +51,9 @@ public class SpongeSchematic implements ISchematic {
     private Map<String, Integer> palette = new HashMap<>();
     private byte[] blocksData;
     private List<Region.RegionBlock> regionBlocks = new ArrayList<>();
+
+    //Entities
+    private List<Entity> entities = new ArrayList<>();
 
     private boolean isLoaded = false;
 
@@ -84,13 +100,17 @@ public class SpongeSchematic implements ISchematic {
             if(errorMessage != ErrorMessage.None)
                 return errorMessage;
 
+            // TODO: Read block data
             errorMessage = readBlocks();
             if(errorMessage != ErrorMessage.None)
                 return errorMessage;
 
-            // TODO: Read Block entities
+            if(this.version != 2)
+                return ErrorMessage.None;
 
-            // TODO: Read entities
+            errorMessage = readEntities(nbtTag);
+            if(errorMessage != ErrorMessage.None)
+                return ErrorMessage.NBTEntities;
 
             // TODO: Read Biome Palette
 
@@ -215,6 +235,204 @@ public class SpongeSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
+    private ErrorMessage readEntities(NBTCompound nbtTag) {
+        NBTList<NBT> nbtEntityList = nbtTag.getList("Entities");
+        if(nbtEntityList == null || nbtEntityList.getLength() == 0)
+            return ErrorMessage.None;
+
+        for (NBT nbtEntity : nbtEntityList) {
+            if(!(nbtEntity instanceof NBTCompound))
+                continue;
+
+            NBTCompound entityTag = (NBTCompound) nbtEntity;
+            String id = entityTag.getString("Id");
+
+            String fullName = id.split("\\[")[0];
+            String name = fullName.split(":")[1];
+
+            EntityType entityType = EntityType.valueOf(name.toUpperCase());
+            Position position = new Position(0, 0, 0, 0, 0);
+            NBTList<NBTDouble> positionNbt = entityTag.getList("Pos");
+            NBTList<NBTFloat> rotationNbt = entityTag.getList("Rotation");
+
+            if(positionNbt != null) {
+                position.setX((float)positionNbt.get(0).getValue() - offset[0]);
+                position.setY((float)positionNbt.get(1).getValue() - offset[1]);
+                position.setZ((float)positionNbt.get(2).getValue() - offset[2]);
+            }
+
+            if(rotationNbt != null) {
+                position.setYaw(rotationNbt.get(0).getValue());
+                position.setPitch(rotationNbt.get(1).getValue());
+            }
+
+            Entity entity = EntityUtils.getEntity(entityType, position);
+            if(entity == null)
+                continue;
+
+            String customName = entityTag.getString("CustomName");
+            if(customName != null)
+                entity.setCustomName(ChatParser.toColoredText(customName));
+
+            Integer customNameVisible = entityTag.getAsInt("CustomNameVisible");
+            if(customNameVisible != null)
+                entity.setCustomNameVisible(customNameVisible == 1);
+
+            Integer noGravity = entityTag.getAsInt("NoGravity");
+            if(noGravity != null)
+                entity.setNoGravity(noGravity == 1);
+
+            Integer glowing = entityTag.getAsInt("Glowing");
+            if(glowing != null)
+                entity.setGlowing(glowing == 1);
+
+            Integer silent = entityTag.getAsInt("Silent");
+            if(silent != null)
+                entity.setSilent(silent == 1);
+
+            Integer invisible = entityTag.getAsInt("Invisible");
+            if(invisible != null)
+                entity.setInvisible(invisible == 1);
+
+            // Living Entity
+            if(entity instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) entity;
+
+                Integer invulnerable = entityTag.getAsInt("Invulnerable");
+                if(invulnerable != null)
+                    livingEntity.setInvulnerable(invulnerable == 1);
+
+                Float health = entityTag.getFloat("Health");
+                if(health != null)
+                    livingEntity.setHealth(health);
+            }
+
+            // Entity creature
+            if(entity instanceof EntityCreature) {
+                EntityCreature entityCreature = (EntityCreature) entity;
+
+                // Armor
+                NBTList<NBTCompound> nbtArmorItems = ((NBTCompound) nbtEntity).getList("ArmorItems");
+
+                // Boots
+                entityCreature.setBoots(ItemStackUtils.getItemStackFromNBT(nbtArmorItems.get(0)));
+
+                // Leggings
+                entityCreature.setLeggings(ItemStackUtils.getItemStackFromNBT(nbtArmorItems.get(1)));
+
+                // Chestplate
+                entityCreature.setChestplate(ItemStackUtils.getItemStackFromNBT(nbtArmorItems.get(2)));
+
+                // Helmet
+                entityCreature.setHelmet(ItemStackUtils.getItemStackFromNBT(nbtArmorItems.get(3)));
+
+
+                // Hands
+                NBTList<NBTCompound> nbtHandItems = ((NBTCompound) nbtEntity).getList("HandItems");
+
+                // Main Hand
+                entityCreature.setItemInMainHand(ItemStackUtils.getItemStackFromNBT(nbtHandItems.get(0)));
+
+                // Off Hand Hand
+                entityCreature.setItemInOffHand(ItemStackUtils.getItemStackFromNBT(nbtHandItems.get(1)));
+            }
+
+            // Armor stand
+            if(entity instanceof EntityArmorStand) {
+                EntityArmorStand entityArmorStand = (EntityArmorStand) entity;
+
+                // Armor
+                NBTList<NBTCompound> nbtArmorItems = ((NBTCompound) nbtEntity).getList("ArmorItems");
+
+                // Boots
+                entityArmorStand.setBoots(ItemStackUtils.getItemStackFromNBT(nbtArmorItems.get(0)));
+
+                // Leggings
+                entityArmorStand.setLeggings(ItemStackUtils.getItemStackFromNBT(nbtArmorItems.get(1)));
+
+                // Chestplate
+                entityArmorStand.setChestplate(ItemStackUtils.getItemStackFromNBT(nbtArmorItems.get(2)));
+
+                // Helmet
+                entityArmorStand.setHelmet(ItemStackUtils.getItemStackFromNBT(nbtArmorItems.get(3)));
+
+
+                // Hands
+                NBTList<NBTCompound> nbtHandItems = ((NBTCompound) nbtEntity).getList("HandItems");
+
+                // Main Hand
+                entityArmorStand.setItemInMainHand(ItemStackUtils.getItemStackFromNBT(nbtHandItems.get(0)));
+
+                // Off Hand Hand
+                entityArmorStand.setItemInOffHand(ItemStackUtils.getItemStackFromNBT(nbtHandItems.get(1)));
+
+
+                // Pose
+                NBTCompound pose = (NBTCompound) entityTag.get("Pose");
+                if(pose != null) {
+                    // Head
+                    NBTList<NBTFloat> nbtHead = pose.getList("Head");
+                    if (nbtHead != null)
+                        if(nbtHead.getLength() == 3)
+                            entityArmorStand.setHeadRotation(new Vector(nbtHead.get(0).getValue(), nbtHead.get(1).getValue(), nbtHead.get(2).getValue()));
+
+                    // Body
+                    NBTList<NBTFloat> nbtBody = pose.getList("Body");
+                    if (nbtBody != null)
+                        if(nbtBody.getLength() == 3)
+                            entityArmorStand.setBodyRotation(new Vector(nbtBody.get(0).getValue(), nbtBody.get(1).getValue(), nbtBody.get(2).getValue()));
+
+                    // Left Arm
+                    NBTList<NBTFloat> nbtLeftArm = pose.getList("LeftArm");
+                    if (nbtLeftArm != null)
+                        if(nbtLeftArm.getLength() == 3)
+                            entityArmorStand.setLeftLegRotation(new Vector(nbtLeftArm.get(0).getValue(), nbtLeftArm.get(1).getValue(), nbtLeftArm.get(2).getValue()));
+
+                    // Right Arm
+                    NBTList<NBTFloat> nbtRightArm = pose.getList("RightArm");
+                    if (nbtRightArm != null)
+                        if(nbtRightArm.getLength() == 3)
+                            entityArmorStand.setLeftLegRotation(new Vector(nbtRightArm.get(0).getValue(), nbtRightArm.get(1).getValue(), nbtRightArm.get(2).getValue()));
+
+                    // Left Leg
+                    NBTList<NBTFloat> nbtLeftLeg = pose.getList("LeftLeg");
+                    if (nbtLeftLeg != null)
+                        if(nbtLeftLeg.getLength() == 3)
+                            entityArmorStand.setLeftLegRotation(new Vector(nbtLeftLeg.get(0).getValue(), nbtLeftLeg.get(1).getValue(), nbtLeftLeg.get(2).getValue()));
+
+                    // Right Leg
+                    NBTList<NBTFloat> nbtRightLeg = pose.getList("RightLeg");
+                    if (nbtRightLeg != null)
+                        if(nbtRightLeg.getLength() == 3)
+                            entityArmorStand.setLeftLegRotation(new Vector(nbtRightLeg.get(0).getValue(), nbtRightLeg.get(1).getValue(), nbtRightLeg.get(2).getValue()));
+
+                }
+
+                Integer noBasePlate = entityTag.getAsInt("NoBasePlate");
+                if(noBasePlate != null)
+                    entityArmorStand.setNoBasePlate(noBasePlate == 1);
+
+                Integer small = entityTag.getAsInt("Small");
+                if(small != null)
+                    entityArmorStand.setSmall(small == 1);
+
+                Integer showArms = entityTag.getAsInt("ShowArms");
+                if(showArms != null)
+                    entityArmorStand.setHasArms(showArms == 1);
+
+                Integer marker = entityTag.getAsInt("Marker");
+                if(marker != null)
+                    entityArmorStand.setMarker(marker == 1);
+            }
+
+            // TODO: Item Frame
+
+            entities.add(entity);
+        }
+
+        return ErrorMessage.None;
+    }
+
     public ErrorMessage write(@NotNull Region region) {
         NBTCompound nbtTag = new NBTCompound();
 
@@ -316,7 +534,7 @@ public class SpongeSchematic implements ISchematic {
     }
 
 
-    public ErrorMessage build(@NotNull Position position, Runnable completed) {
+    public ErrorMessage build(@NotNull Position position, Runnable blocksCompleted) {
         if(!this.isLoaded)
             return ErrorMessage.NotLoaded;
 
@@ -335,7 +553,17 @@ public class SpongeSchematic implements ISchematic {
             this.blockBatch.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
         }
 
-        this.blockBatch.flush(completed);
+        this.blockBatch.flush(blocksCompleted);
+
+        for(Entity entity : entities) {
+            Position entityPosition = entity.getPosition();
+            entityPosition.setX(entityPosition.getX() + position.getX());
+            entityPosition.setY(entityPosition.getY() + position.getY());
+            entityPosition.setZ(entityPosition.getZ() + position.getZ());
+
+            entity.setInstance(this.instance);
+        }
+
         return ErrorMessage.None;
     }
 

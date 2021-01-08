@@ -16,7 +16,7 @@
     </modules>
 
     <properties>
-        <minestom-version>7c5bb71</minestom-version>
+        <minestom-version>90006ac</minestom-version>
         <java-version>11</java-version>
 
         <maven.compiler.target>${java-version}</maven.compiler.target>

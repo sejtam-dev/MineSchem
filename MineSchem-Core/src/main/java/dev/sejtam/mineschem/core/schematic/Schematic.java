@@ -62,10 +62,10 @@ public class Schematic implements ISchematic {
         return this.schematic.write(region);
     }
 
-    public ErrorMessage build(@NotNull Position position, Runnable completed) {
+    public ErrorMessage build(@NotNull Position position, Runnable blocksCompleted) {
         if(this.schematic == null)
             this.schematic = new SpongeSchematic(this.schematicFile, this.instance);
 
-        return this.schematic.build(position, completed);
+        return this.schematic.build(position, blocksCompleted);
     }
 }

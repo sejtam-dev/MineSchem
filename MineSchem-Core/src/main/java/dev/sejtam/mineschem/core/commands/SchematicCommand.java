@@ -31,7 +31,7 @@ public class SchematicCommand extends Command {
         Argument<?> type = ArgumentType.Word("type").from("pos1", "pos2", "load", "save");
         Argument<?> fileName = ArgumentType.Word("fileName");
 
-        setArgumentCallback((player, argument, error) -> usage(player, null), type);
+        setArgumentCallback((player, argument) -> usage(player, null), type);
 
         addSyntax((sender, arguments) -> {
             Player player = (Player) sender;

@@ -10,7 +10,7 @@ public interface ISchematic {
 
     ErrorMessage read();
     ErrorMessage write(@NotNull Region region);
-    ErrorMessage build(@NotNull Position position, Runnable completed);
+    ErrorMessage build(@NotNull Position position, Runnable blocksCompleted);
 
     enum ErrorMessage {
         NoSuchFile,
@@ -24,6 +24,7 @@ public interface ISchematic {
         PaletteNotEqualsMaxPalette,
         PaletteGetInt,
         NBTBlockData,
+        NBTEntities,
         BadRead,
         BadWrite,
         VarIntSize,
