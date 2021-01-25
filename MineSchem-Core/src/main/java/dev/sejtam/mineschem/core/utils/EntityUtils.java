@@ -1,7 +1,5 @@
 package dev.sejtam.mineschem.core.utils;
 
-import net.minestom.server.attribute.Attribute;
-import net.minestom.server.attribute.Attributes;
 import net.minestom.server.entity.*;
 import net.minestom.server.entity.type.ambient.*;
 import net.minestom.server.entity.type.animal.*;
@@ -17,8 +15,6 @@ import net.minestom.server.entity.type.vehicle.*;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.utils.Position;
-import org.jglrxavpok.hephaistos.nbt.NBTCompound;
-import org.jglrxavpok.hephaistos.nbt.NBTList;
 
 public class EntityUtils {
 

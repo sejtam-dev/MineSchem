@@ -6,6 +6,8 @@ import net.minestom.server.instance.block.Block;
 import net.minestom.server.utils.BlockPosition;
 import net.minestom.server.utils.Position;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class Region implements Iterable<Region.RegionBlock>, Cloneable {
@@ -15,14 +17,19 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
 
     private Instance instance;
 
-    public Region(Position pos1, Position pos2) {
+    public Region(@NotNull Position pos1, @NotNull Position pos2) {
         this(new BlockPosition(pos1.getX(), pos1.getY(), pos1.getZ())
             ,new BlockPosition(pos2.getX(), pos2.getY(), pos2.getZ()));
     }
-    public Region(BlockPosition position1, BlockPosition position2) {
+    public Region(@NotNull BlockPosition position1, @NotNull BlockPosition position2) {
         this.pos1 = new BlockPosition(Math.min(position1.getX(), position2.getX()), Math.min(position1.getY(), position2.getY()), Math.min(position1.getZ(), position2.getZ()));
         this.pos2 = new BlockPosition(Math.max(position1.getX(), position2.getX()), Math.max(position1.getY(), position2.getY()), Math.max(position1.getZ(), position2.getZ()));
         this.instance = new ArrayList<>(MinecraftServer.getInstanceManager().getInstances()).get(0);
+    }
+    public Region(@NotNull BlockPosition position1, @NotNull BlockPosition position2, @NotNull Instance instance) {
+        this.pos1 = new BlockPosition(Math.min(position1.getX(), position2.getX()), Math.min(position1.getY(), position2.getY()), Math.min(position1.getZ(), position2.getZ()));
+        this.pos2 = new BlockPosition(Math.max(position1.getX(), position2.getX()), Math.max(position1.getY(), position2.getY()), Math.max(position1.getZ(), position2.getZ()));
+        this.instance = instance;
     }
 
     // Width
@@ -137,6 +144,14 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
         }
 
         return map;
+    }
+
+    public Instance getInstance() {
+        return this.instance;
+    }
+
+    public void setInstance(@NotNull Instance instance) {
+        this.instance = instance;
     }
 
     public String toString() {

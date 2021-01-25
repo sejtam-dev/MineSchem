@@ -6,23 +6,16 @@ import kotlin.Pair;
 
 import dev.sejtam.mineschem.core.utils.Region;
 
-import net.minestom.server.MinecraftServer;
 import net.minestom.server.chat.ChatParser;
-import net.minestom.server.chat.JsonMessage;
 import net.minestom.server.entity.*;
-import net.minestom.server.entity.type.animal.EntityCat;
 import net.minestom.server.entity.type.decoration.EntityArmorStand;
-import net.minestom.server.entity.type.decoration.EntityItemFrame;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.batch.BlockBatch;
 import net.minestom.server.instance.block.Block;
-import net.minestom.server.item.ItemStack;
-import net.minestom.server.item.Material;
 import net.minestom.server.utils.BlockPosition;
-import net.minestom.server.utils.NBTUtils;
 import net.minestom.server.utils.Position;
-
 import net.minestom.server.utils.Vector;
+
 import org.jetbrains.annotations.NotNull;
 
 import org.jglrxavpok.hephaistos.nbt.*;
@@ -58,7 +51,7 @@ public class SpongeSchematic implements ISchematic {
     private boolean isLoaded = false;
 
     public SpongeSchematic(@NotNull String schematicName, @NotNull Instance instance) {
-        this(new File("schematics/" + schematicName + ".schem"), instance);
+        this(new File(Schematic.MAIN_FOLDER + schematicName + ".schem"), instance);
     }
     public SpongeSchematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;

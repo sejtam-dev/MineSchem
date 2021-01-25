@@ -16,13 +16,15 @@ import java.io.IOException;
 
 public class Schematic implements ISchematic {
 
+    public static final String MAIN_FOLDER = "MineSchem/schematics/";
+
     private File schematicFile;
     private Instance instance;
 
     private ISchematic schematic;
 
     public Schematic(@NotNull String schematicName, @NotNull Instance instance) {
-        this(new File("schematics/" + schematicName + ".schem"), instance);
+        this(new File(MAIN_FOLDER + schematicName + ".schem"), instance);
     }
     public Schematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;
@@ -59,6 +61,7 @@ public class Schematic implements ISchematic {
         if(this.schematic == null)
             this.schematic = new SpongeSchematic(this.schematicFile, this.instance);
 
+        region.setInstance(this.instance);
         return this.schematic.write(region);
     }
 

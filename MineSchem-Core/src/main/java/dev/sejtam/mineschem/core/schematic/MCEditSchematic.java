@@ -10,6 +10,7 @@ import net.minestom.server.utils.BlockPosition;
 import net.minestom.server.utils.Position;
 
 import org.jetbrains.annotations.NotNull;
+
 import org.jglrxavpok.hephaistos.nbt.*;
 
 import java.io.File;
@@ -40,7 +41,7 @@ public class MCEditSchematic implements ISchematic {
     private boolean isLoaded = false;
 
     public MCEditSchematic(@NotNull String schematicName, @NotNull Instance instance) {
-        this(new File("schematics/" + schematicName + ".schem"), instance);
+        this(new File(Schematic.MAIN_FOLDER + schematicName + ".schem"), instance);
     }
     public MCEditSchematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;
@@ -131,6 +132,7 @@ public class MCEditSchematic implements ISchematic {
         if(nbtTag.containsKey("AddBlocks"))
             this.addId = nbtTag.getByteArray("AddBlocks");
 
+        blocks = new short[blockId.length];
         for (int index = 0; index < this.blockId.length; index++) {
             if ((index >> 1) >= this.addId.length) {
                 this.blocks[index] = (short) (this.blockId[index] & 0xFF);

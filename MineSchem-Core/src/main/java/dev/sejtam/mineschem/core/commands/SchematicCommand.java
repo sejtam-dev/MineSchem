@@ -29,7 +29,7 @@ public class SchematicCommand extends Command {
         setDefaultExecutor(this::usage);
 
         Argument<?> type = ArgumentType.Word("type").from("pos1", "pos2", "load", "save");
-        Argument<?> fileName = ArgumentType.Word("fileName");
+        Argument<?> fileName = ArgumentType.String("fileName");
 
         setArgumentCallback((player, argument) -> usage(player, null), type);
 
@@ -41,7 +41,7 @@ public class SchematicCommand extends Command {
                 case "load":
                         sender.sendMessage(ChatColor.RED + "Schematic loading...");
 
-                        Schematic loadSchematic = new Schematic(arguments.getWord("fileName"), player.getInstance());
+                        Schematic loadSchematic = new Schematic(arguments.getString("fileName"), player.getInstance());
                         loadSchematic.read();
 
                         ISchematic.ErrorMessage errorMessage = loadSchematic.build(player.getPosition(), () -> {
@@ -66,8 +66,8 @@ public class SchematicCommand extends Command {
                             break;
                         }
 
-                        Schematic writeSchematic = new Schematic(arguments.getWord("fileName"), player.getInstance());
-                        Region region = new Region(this.pos1.get(uuid), this.pos2.get(uuid));
+                        Schematic writeSchematic = new Schematic(arguments.getString("fileName"), player.getInstance());
+                        Region region = new Region(this.pos1.get(uuid), this.pos2.get(uuid), player.getInstance());
 
                         ISchematic.ErrorMessage errorMessage1 = writeSchematic.write(region);
                         if(errorMessage1 == ISchematic.ErrorMessage.None)
