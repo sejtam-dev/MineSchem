@@ -15,10 +15,13 @@ import net.minestom.server.entity.type.vehicle.*;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.utils.Position;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class EntityUtils {
 
-    public static Entity getEntity(EntityType type, Position position) {
+    @Nullable
+    public static Entity getEntity(@NotNull EntityType type, @NotNull Position position) {
         switch (type) {
             case BAT:
                 return new EntityBat(position);

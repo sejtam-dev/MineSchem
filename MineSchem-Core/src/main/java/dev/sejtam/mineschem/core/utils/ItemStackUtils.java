@@ -3,11 +3,12 @@ package dev.sejtam.mineschem.core.utils;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.utils.NBTUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jglrxavpok.hephaistos.nbt.NBTCompound;
 
 public class ItemStackUtils {
 
-    public static ItemStack getItemStackFromNBT(NBTCompound nbtItem) {
+    public static ItemStack getItemStackFromNBT(@NotNull NBTCompound nbtItem) {
         if(nbtItem == null)
             return new ItemStack(Material.AIR, (byte)0);
 

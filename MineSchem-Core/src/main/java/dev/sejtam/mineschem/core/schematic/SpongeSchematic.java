@@ -45,7 +45,7 @@ public class SpongeSchematic implements ISchematic {
     private byte[] blocksData;
     private List<Region.RegionBlock> regionBlocks = new ArrayList<>();
 
-    //Entities
+    // Entities
     private List<Entity> entities = new ArrayList<>();
 
     private boolean isLoaded = false;
@@ -117,7 +117,7 @@ public class SpongeSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
-    private ErrorMessage readSizes(NBTCompound nbtTag) {
+    private ErrorMessage readSizes(@NotNull NBTCompound nbtTag) {
         // Get Width
         this.width = nbtTag.getShort("Width");
         if(this.width == null)
@@ -141,7 +141,7 @@ public class SpongeSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
-    private ErrorMessage readBlockPalette(NBTCompound nbtTag) {
+    private ErrorMessage readBlockPalette(@NotNull NBTCompound nbtTag) {
         // Get Max Palette
         this.maxPalette = nbtTag.getInt("PaletteMax");
         if(this.maxPalette == null)
@@ -228,7 +228,7 @@ public class SpongeSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
-    private ErrorMessage readEntities(NBTCompound nbtTag) {
+    private ErrorMessage readEntities(@NotNull NBTCompound nbtTag) {
         NBTList<NBT> nbtEntityList = nbtTag.getList("Entities");
         if(nbtEntityList == null || nbtEntityList.getLength() == 0)
             return ErrorMessage.None;
@@ -249,9 +249,9 @@ public class SpongeSchematic implements ISchematic {
             NBTList<NBTFloat> rotationNbt = entityTag.getList("Rotation");
 
             if(positionNbt != null) {
-                position.setX((float)positionNbt.get(0).getValue() - offset[0]);
-                position.setY((float)positionNbt.get(1).getValue() - offset[1]);
-                position.setZ((float)positionNbt.get(2).getValue() - offset[2]);
+                position.setX(positionNbt.get(0).getValue() - offset[0]);
+                position.setY(positionNbt.get(1).getValue() - offset[1]);
+                position.setZ(positionNbt.get(2).getValue() - offset[2]);
             }
 
             if(rotationNbt != null) {
@@ -459,7 +459,7 @@ public class SpongeSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
-    private ErrorMessage writeSizes(NBTCompound nbtTag, Region region) {
+    private ErrorMessage writeSizes(@NotNull NBTCompound nbtTag, @NotNull Region region) {
         // Set Width
         nbtTag.setShort("Width", (short)region.getSizeX());
 
@@ -480,7 +480,7 @@ public class SpongeSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
-    private ErrorMessage writeBlockPalette(NBTCompound nbtTag, Region region) {
+    private ErrorMessage writeBlockPalette(@NotNull NBTCompound nbtTag, @NotNull Region region) {
         // Generate Palette
         int paletteMax = 0;
         Map<String, Integer> palette = new HashMap<>();
@@ -560,14 +560,14 @@ public class SpongeSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
-    private Block getBlock(String input) {
+    private Block getBlock(@NotNull String input) {
         String fullName = input.split("\\[")[0];
         String name = fullName.split(":")[1];
 
         return Block.valueOf(name.toUpperCase());
     }
 
-    private short getStateId(String input) {
+    private short getStateId(@NotNull String input) {
         Block block = getBlock(input);
         String states = input.replaceAll(block.getName(), "");
 

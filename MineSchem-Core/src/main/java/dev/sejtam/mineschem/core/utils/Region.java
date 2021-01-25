@@ -164,7 +164,7 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
         private int x, y, z;
         private int sizeX, sizeY, sizeZ;
 
-        public RegionIterator(int x1, int y1, int z1, int x2, int y2, int z2, Instance instance) {
+        public RegionIterator(int x1, int y1, int z1, int x2, int y2, int z2, @NotNull Instance instance) {
             this.instance = instance;
             this.baseX = x1;
             this.baseY = y1;
@@ -203,7 +203,7 @@ public class Region implements Iterable<Region.RegionBlock>, Cloneable {
         private BlockPosition blockPosition;
         private short stateId;
 
-        public RegionBlock(BlockPosition blockPosition, short stateId) {
+        public RegionBlock(@NotNull BlockPosition blockPosition, short stateId) {
             this.blockPosition = blockPosition;
             this.stateId = stateId;
         }

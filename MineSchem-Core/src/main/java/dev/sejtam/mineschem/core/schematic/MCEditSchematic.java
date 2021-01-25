@@ -94,7 +94,7 @@ public class MCEditSchematic implements ISchematic {
         return ErrorMessage.None;
     }
 
-    private ErrorMessage readSizes(NBTCompound nbtTag) {
+    private ErrorMessage readSizes(@NotNull NBTCompound nbtTag) {
         // Get Width
         this.width = nbtTag.getShort("Width");
         if(this.width == null)
@@ -114,7 +114,7 @@ public class MCEditSchematic implements ISchematic {
     }
 
 
-    private ErrorMessage readBlocksData(NBTCompound nbtTag) {
+    private ErrorMessage readBlocksData(@NotNull NBTCompound nbtTag) {
         // Check materials
         this.materials = nbtTag.getString("Materials");
         if(!this.materials.equals("Alpha"))
