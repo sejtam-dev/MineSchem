@@ -21,7 +21,7 @@ Repository
 <repositories>
     <repository>
          <id>MineSchem</id>
-         <url>https://repo.repsy.io/mvn/sejtam10/mineschem</url>
+         <url>https://repo.repsy.io/mvn/sejtam10/minestom</url>
     </repository>
 </repositories>
 ```
@@ -41,14 +41,14 @@ Gradle
 Repository
 ```
 repositories {
-    maven { url 'https://repo.repsy.io/mvn/sejtam10/mineschem' }
+    maven { url 'https://repo.repsy.io/mvn/sejtam10/minestom' }
 }
 ```
 
 Dependency
 ```
 dependencies {
-    compile 'dev.sejtam:MineSchem-Core:1.0'
+    compile 'dev.sejtam:MineSchem-Core:1.1'
 }
 ```
 
