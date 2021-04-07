@@ -85,9 +85,9 @@ public class AnvilChunkLoader implements IChunkLoader {
                     Arrays.fill(biomes, voidBiome);
                 }
                 Chunk loadedChunk = new DynamicChunk(biomes, chunkX, chunkZ);
-                ChunkBatch batch = instance.createChunkBatch(loadedChunk);
+                ChunkBatch batch = new ChunkBatch();
                 loadBlocks(instance, chunkX, chunkZ, batch, fileChunk);
-                batch.unsafeFlush(c -> {
+                batch.apply(instance, loadedChunk, c -> {
                     loadTileEntities(c, chunkX, chunkZ, instance, fileChunk);
                     if (callback != null) {
                         callback.accept(c);

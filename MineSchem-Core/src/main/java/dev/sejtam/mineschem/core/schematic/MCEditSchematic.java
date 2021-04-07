@@ -5,7 +5,7 @@ import kotlin.Pair;
 import dev.sejtam.mineschem.core.utils.Region;
 
 import net.minestom.server.instance.Instance;
-import net.minestom.server.instance.batch.BlockBatch;
+import net.minestom.server.instance.batch.AbsoluteBlockBatch;
 import net.minestom.server.utils.BlockPosition;
 import net.minestom.server.utils.Position;
 
@@ -21,7 +21,7 @@ public class MCEditSchematic implements ISchematic {
 
     private File schematicFile;
     private Instance instance;
-    private BlockBatch blockBatch;
+    private AbsoluteBlockBatch blockBatch;
 
     private Integer version = 2;
 
@@ -183,7 +183,7 @@ public class MCEditSchematic implements ISchematic {
         if(this.regionBlocks == null || this.regionBlocks.size() == 0)
             return ErrorMessage.NoBlocks;
 
-        this.blockBatch = this.instance.createBlockBatch();
+        this.blockBatch = new AbsoluteBlockBatch();
 
         for (Region.RegionBlock regionBlock : this.regionBlocks) {
             BlockPosition blockPosition = regionBlock.getPosition();
@@ -192,7 +192,7 @@ public class MCEditSchematic implements ISchematic {
             this.blockBatch.setBlockStateId(blockPosition.getX() + (int)position.getX(), blockPosition.getY() + (int)position.getY(), blockPosition.getZ() + (int)position.getZ(), stateId);
         }
 
-        this.blockBatch.flush(blocksCompleted);
+        this.blockBatch.apply(this.instance, blocksCompleted);
 
         return ErrorMessage.None;
     }

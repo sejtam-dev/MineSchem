@@ -5,7 +5,7 @@
     <parent>
         <artifactId>MineSchem</artifactId>
         <groupId>dev.sejtam</groupId>
-        <version>1.1</version>
+        <version>2.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,7 @@
         <repository>
             <id>repsy</id>
             <name>Public Repository</name>
-            <url>https://repo.repsy.io/mvn/sejtam10/mineschem/</url>
+            <url>https://repo.repsy.io/mvn/sejtam10/minestom/</url>
         </repository>
     </distributionManagement>
 

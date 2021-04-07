@@ -15,14 +15,14 @@ public class MineSchem extends Extension {
         if(commandManager.getCommand("schematic") == null)
             MinecraftServer.getCommandManager().register(new SchematicCommand());
 
-        System.out.println("[MineSchem " + getDescription().getVersion() + "] Loaded!");
+        System.out.println("[MineSchem] Loaded!");
     }
 
     @Override
     public void terminate() {
         MinecraftServer.getCommandManager().unregister(new SchematicCommand());
 
-        System.out.println("[MineSchem " + getDescription().getVersion() + "] UnLoaded!");
+        System.out.println("[MineSchem] UnLoaded!");
     }
 
 }
