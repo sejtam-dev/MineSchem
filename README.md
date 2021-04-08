@@ -8,9 +8,8 @@ Support
     - Write ✅ - [WorldEdit](https://github.com/EngineHub/WorldEdit/blob/master/worldedit-core/src/main/java/com/sk89q/worldedit/extent/clipboard/io/SpongeSchematicWriter.java)
     - Build ✅
     
- - MCEdit Schematic (x.x - 1.12.2) ❌
+ - MCEdit Schematic (x.x - 1.12.2) ❌ (Reading not working properly)
     - Read ✅ - [WorldEdit](https://github.com/EngineHub/WorldEdit/blob/master/worldedit-core/src/main/java/com/sk89q/worldedit/extent/clipboard/io/MCEditSchematicReader.java)
-    - Write ❌
     - Build ✅
     
 Maven
@@ -21,7 +20,7 @@ Repository
 <repositories>
     <repository>
          <id>MineSchem</id>
-         <url>https://repo.repsy.io/mvn/sejtam10/mineschem</url>
+         <url>https://repo.repsy.io/mvn/sejtam10/minestom</url>
     </repository>
 </repositories>
 ```
@@ -41,7 +40,7 @@ Gradle
 Repository
 ```
 repositories {
-    maven { url 'https://repo.repsy.io/mvn/sejtam10/mineschem' }
+    maven { url 'https://repo.repsy.io/mvn/sejtam10/minestom' }
 }
 ```
 

@@ -27,7 +27,10 @@ public class Schematic implements ISchematic {
         this(new File(MAIN_FOLDER + schematicName + ".schem"), instance);
     }
     public Schematic(@NotNull File schematicFile, @NotNull Instance instance) {
-        this.schematicFile = schematicFile;
+        if(schematicFile.exists())
+            this.schematicFile = schematicFile;
+        else
+            this.schematicFile = new File(schematicFile.getPath() + "atic");
         this.instance = instance;
     }
 
