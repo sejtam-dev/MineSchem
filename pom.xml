@@ -6,7 +6,7 @@
 
     <groupId>dev.sejtam</groupId>
     <artifactId>MineSchem</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -69,6 +69,14 @@
             <type>pom</type>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>repsy</id>
+            <name>Public Repository</name>
+            <url>https://repo.repsy.io/mvn/sejtam10/minestom/</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>

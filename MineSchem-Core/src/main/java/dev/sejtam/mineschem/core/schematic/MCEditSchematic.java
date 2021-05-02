@@ -40,9 +40,6 @@ public class MCEditSchematic implements ISchematic {
 
     private boolean isLoaded = false;
 
-    public MCEditSchematic(@NotNull String schematicName, @NotNull Instance instance) {
-        this(new File(Schematic.MAIN_FOLDER + schematicName + ".schem"), instance);
-    }
     public MCEditSchematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;
         this.instance = instance;
@@ -155,7 +152,7 @@ public class MCEditSchematic implements ISchematic {
                     int index = y * this.width * this.length + z * this.width + x;
 
                     // TODO: Test it. Idk it is working. Idk how to convert BlockId and BlockData into the stateId
-                    short stateId = (short)(this.blocks[index] << 8 | this.blocksData[index]);
+                    short stateId = this.blocks[index];
 
                     this.regionBlocks.add(new Region.RegionBlock(
                             new BlockPosition(x, y, z),

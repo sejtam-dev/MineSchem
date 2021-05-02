@@ -44,9 +44,6 @@ public class SpongeSchematic implements ISchematic {
 
     private boolean isLoaded = false;
 
-    public SpongeSchematic(@NotNull String schematicName, @NotNull Instance instance) {
-        this(new File(Schematic.MAIN_FOLDER + schematicName + ".schem"), instance);
-    }
     public SpongeSchematic(@NotNull File schematicFile, @NotNull Instance instance) {
         this.schematicFile = schematicFile;
         this.instance = instance;
