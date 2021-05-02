@@ -30,7 +30,7 @@ Dependency
 <dependency>
     <groupId>dev.sejtam</groupId>
     <artifactId>MineSchem-Core</artifactId>
-    version>2.1.0</version>
+    version>3.0.0</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@ repositories {
 Dependency
 ```
 dependencies {
-    compile 'dev.sejtam:MineSchem-Core:2.1.0'
+    compile 'dev.sejtam:MineSchem-Core:3.0.0'
 }
 ```
 
