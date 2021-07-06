@@ -30,7 +30,7 @@ Dependency
 <dependency>
     <groupId>dev.sejtam</groupId>
     <artifactId>MineSchem-Core</artifactId>
-    version>3.0.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
